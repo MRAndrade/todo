@@ -13,21 +13,38 @@ clearBtn.addEventListener("click", clearList);
 initialLoad();
 
 function addItem(){
-  //cancelling input of an empty item
-  if (newItem.value == " ") {
-    newItem.value = "";
+  var todoText = "";
+
+  for(var i = 0; i < newItem.value.length; i++){
+    if (newItem.value[i] !== " ") {
+
+      todoText += newItem.value[i];
+      
+    } else if(
+      //checking if next character isn't a space
+      newItem.value[i+1] !== " "
+      //checking if if it's not the last item of the string
+      && newItem.value[i+1] !== undefined
+      //checking if previous character isn't a space
+      && newItem.value[i-1] !== " " &&
+      //checking if if it's not the first item of the string
+      newItem.value[i-1] !== undefined) {
+
+      todoText += newItem.value[i];
+
+    }
   }
 
-  //adding valid item to te list
-  if (newItem.value) {
-    var todoText = document.createTextNode(newItem.value);
+  console.log(todoText);
+
+  if (todoText !== "") {
 
     var check = document.createElement('input');
     check.setAttribute('type','checkbox');
 
     var li = document.createElement('li');
     li.appendChild(check);
-    li.appendChild(todoText);
+    li.append(todoText);
 
     todoList.appendChild(li);
     newItem.value = "";
