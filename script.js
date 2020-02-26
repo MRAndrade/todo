@@ -2,6 +2,7 @@
 
 var newItem = document.getElementById('new-item');
 var addBtn = document.getElementById('add-btn');
+var removeBtn = document.getElementById('remove-btn');
 var clearBtn = document.getElementById('clear-btn');
 var todoList = document.getElementById('todo-list');
 var counterList = document.getElementById('counter-list');
@@ -13,8 +14,10 @@ newItem.addEventListener("keydown", function(e){
     addItem();
   };
 });
+
 addBtn.addEventListener("click", addItem);
 clearBtn.addEventListener("click", clearList);
+removeBtn.addEventListener("click", enableRemove);
 initialLoad();
 
 function addItem(){
@@ -62,9 +65,13 @@ function addItem(){
     var check = document.createElement('input');
     check.setAttribute('type','checkbox');
 
+    var deleteBtn = document.createElement('button');
+    deleteBtn.classList.add('none');
+
     var li = document.createElement('li');
     li.appendChild(check);
     li.append(todoText);
+    li.appendChild(deleteBtn);
 
     todoList.appendChild(li);
     newItem.value = "";
@@ -72,6 +79,20 @@ function addItem(){
   
   initialLoad();
 }
+
+function enableRemove(){
+  var currentItems = todoList.querySelectorAll('button');
+  for (var i = 0; i < currentItems.length; i++){
+    currentItems[i].classList.toggle('none');
+    currentItems[i].addEventListener('click', removeItem);
+  }
+
+  function removeItem(){
+    this.parentNode.remove();
+    countList();
+  }
+}
+
 
 function clearList() {
   todoList.innerHTML = "";
