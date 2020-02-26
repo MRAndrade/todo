@@ -8,6 +8,11 @@ var counterList = document.getElementById('counter-list');
 
 //adding Listerers so I can add items and clear the whole list
 
+newItem.addEventListener("keydown", function(e){
+  if (e.keyCode === 13) {
+    addItem();
+  };
+});
 addBtn.addEventListener("click", addItem);
 clearBtn.addEventListener("click", clearList);
 initialLoad();
@@ -47,6 +52,7 @@ function addItem(){
       newItem.value[i+1] !== undefined &&
       //preventing whitespaces BEFORE the non whitespace character
       todoText !== ""){
+
         todoText += " ";
     }
   }
@@ -87,8 +93,24 @@ function countList() {
   }
 }
 
-//Function to keep focus on input and counter up to date
+function toggleDone(){
+  this.parentNode.classList.toggle('done');
+}
+
+//This function is called when screen is first loadead, a new item is added or the list is cleared
 function initialLoad(){
+
+  //keeping focus on new item input
   newItem.focus();
+
+  //keeping up the number of items in the list
   countList();
+
+  //creating a variable that holds all existing checkboxes at the moment
+  var checkboxItems = document.querySelectorAll('input[type="checkbox"]');
+
+  //adding a listener to every existing checkbox so it can apply the visual effect to the text of each item
+  for (var i = 0; i < checkboxItems.length; i++){
+    checkboxItems[i].addEventListener('click', toggleDone);
+  }
 }
