@@ -16,26 +16,40 @@ function addItem(){
   var todoText = "";
 
   for(var i = 0; i < newItem.value.length; i++){
-    if (newItem.value[i] !== " ") {
+      
+    if (
+      //if character isn't a space
+      newItem.value[i] !== " ") {
 
       todoText += newItem.value[i];
       
     } else if(
-      //checking if next character isn't a space
+      //if next character isn't a space
       newItem.value[i+1] !== " "
-      //checking if if it's not the last item of the string
+      //if if it's not the last item of the string
       && newItem.value[i+1] !== undefined
-      //checking if previous character isn't a space
-      && newItem.value[i-1] !== " " &&
-      //checking if if it's not the first item of the string
-      newItem.value[i-1] !== undefined) {
+      //if previous character isn't a space
+      && newItem.value[i-1] !== " "
+      //if it's not the first item of the string
+      && newItem.value[i-1] !== undefined) {
 
       todoText += newItem.value[i];
 
     }
+    
+    //in case of multiple whitespaces in a row
+    else if (
+      //if previous character is a space
+      newItem.value[i-1] == " " &&
+      //if next character isn't a space
+      newItem.value[i+1] !== " " &&
+      //if it's not the last item of the string
+      newItem.value[i+1] !== undefined &&
+      //preventing whitespaces BEFORE the non whitespace character
+      todoText !== ""){
+        todoText += " ";
+    }
   }
-
-  console.log(todoText);
 
   if (todoText !== "") {
 
