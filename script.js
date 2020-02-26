@@ -2,7 +2,6 @@
 
 var newItem = document.getElementById('new-item');
 var addBtn = document.getElementById('add-btn');
-var removeBtn = document.getElementById('remove-btn');
 var clearBtn = document.getElementById('clear-btn');
 var todoList = document.getElementById('todo-list');
 var counterList = document.getElementById('counter-list');
@@ -17,7 +16,6 @@ newItem.addEventListener("keydown", function(e){
 
 addBtn.addEventListener("click", addItem);
 clearBtn.addEventListener("click", clearList);
-removeBtn.addEventListener("click", enableRemove);
 initialLoad();
 
 function addItem(){
@@ -65,12 +63,21 @@ function addItem(){
     var check = document.createElement('input');
     check.setAttribute('type','checkbox');
 
+    var editBtn = document.createElement('button');
+    editBtn.setAttribute('class', 'edit-btn');
+    
+    var editInput = document.createElement('input');
+    editInput.setAttribute('type','text');
+    editInput.setAttribute('class','edit-input');
+
     var deleteBtn = document.createElement('button');
-    deleteBtn.classList.add('none');
+    deleteBtn.setAttribute('class','delete-btn');
 
     var li = document.createElement('li');
     li.appendChild(check);
     li.append(todoText);
+    li.appendChild(editInput);
+    li.appendChild(editBtn);
     li.appendChild(deleteBtn);
 
     todoList.appendChild(li);
@@ -80,19 +87,16 @@ function addItem(){
   initialLoad();
 }
 
-function enableRemove(){
-  var currentItems = todoList.querySelectorAll('button');
-  for (var i = 0; i < currentItems.length; i++){
-    currentItems[i].classList.toggle('none');
-    currentItems[i].addEventListener('click', removeItem);
-  }
-
-  function removeItem(){
-    this.parentNode.remove();
-    countList();
-  }
+function editItem(){
+  var teste = this.parentNode.querySelector('input[class="edit-input"]');
+  console.log(teste);
+  initialLoad();
 }
 
+function removeItem(){
+  this.parentNode.remove();
+  initialLoad();
+}
 
 function clearList() {
   todoList.innerHTML = "";
@@ -133,5 +137,19 @@ function initialLoad(){
   //adding a listener to every existing checkbox so it can apply the visual effect to the text of each item
   for (var i = 0; i < checkboxItems.length; i++){
     checkboxItems[i].addEventListener('click', toggleDone);
+  }
+
+  var editBtns = document.querySelectorAll('button[class="edit-btn"]');
+
+  for (var i = 0; i < editBtns.length; i++){
+    editBtns[i].addEventListener('click', editItem);
+  }
+
+  //creating a variable that holds all existing delete buttons from items at the moment
+  var deleteBtns = document.querySelectorAll('button[class="delete-btn"]');
+
+  //adding a listener to every delete button so it can delete the item which holds it
+  for (var i = 0; i < deleteBtns.length; i++){
+    deleteBtns[i].addEventListener('click', removeItem);
   }
 }
