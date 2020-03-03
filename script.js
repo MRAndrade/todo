@@ -4,6 +4,7 @@ var newItem = document.getElementById('new-item');
 var addBtn = document.getElementById('add-btn');
 var clearBtn = document.getElementById('clear-btn');
 var todoList = document.getElementById('todo-list');
+var doneItem = document.getElementById('is-done');
 var counterList = document.getElementById('counter-list');
 
 //adding Listerers so I can add items and clear the whole list
@@ -63,33 +64,18 @@ function addItem(){
     var check = document.createElement('input');
     check.setAttribute('type','checkbox');
 
-    var editBtn = document.createElement('button');
-    editBtn.setAttribute('class', 'edit-btn');
-    
-    var editInput = document.createElement('input');
-    editInput.setAttribute('type','text');
-    editInput.setAttribute('class','edit-input');
-
     var deleteBtn = document.createElement('button');
     deleteBtn.setAttribute('class','delete-btn');
 
     var li = document.createElement('li');
     li.appendChild(check);
     li.append(todoText);
-    li.appendChild(editInput);
-    li.appendChild(editBtn);
     li.appendChild(deleteBtn);
 
     todoList.appendChild(li);
     newItem.value = "";
   }
   
-  initialLoad();
-}
-
-function editItem(){
-  var teste = this.parentNode.querySelector('input[class="edit-input"]');
-  console.log(teste);
   initialLoad();
 }
 
@@ -103,19 +89,20 @@ function clearList() {
   initialLoad();
 }
 
-function countList() {
-  var counter = todoList.childElementCount;
-  counterList.innerHTML = counterText(counter);
-  
-  function counterText(number){
-    if (number === 0) {
-      return 'No items in the list.';
-    } else if (number === 1) {
-      return '1 item in the list.';
-    } else {
-      return number + ' items in the list.';
+function isDone(){
+  var counter = 0;
+  var items = todoList.children;
+  for (var i=0; i < items.length; i++){
+    if (items[i].classList.contains('done')){
+      counter++;
     }
   }
+  doneItem.innerHTML = counter;
+}
+
+function countList() {
+  var counter = todoList.childElementCount;
+  counterList.innerHTML = '/' + counter;
 }
 
 function toggleDone(){
@@ -128,21 +115,20 @@ function initialLoad(){
   //keeping focus on new item input
   newItem.focus();
 
-  //keeping up the number of items in the list
+  //keeping up the counter
+  isDone();
   countList();
 
   //creating a variable that holds all existing checkboxes at the moment
   var checkboxItems = document.querySelectorAll('input[type="checkbox"]');
-
-  //adding a listener to every existing checkbox so it can apply the visual effect to the text of each item
-  for (var i = 0; i < checkboxItems.length; i++){
-    checkboxItems[i].addEventListener('click', toggleDone);
+  if(checkboxItems.length === 0){
+    doneItem.innerHTML = 0;
   }
 
-  var editBtns = document.querySelectorAll('button[class="edit-btn"]');
-
-  for (var i = 0; i < editBtns.length; i++){
-    editBtns[i].addEventListener('click', editItem);
+  //adding a listener to every existing checkbox
+  for (var i = 0; i < checkboxItems.length; i++){
+    checkboxItems[i].addEventListener('click', toggleDone);
+    checkboxItems[i].addEventListener('click', isDone);
   }
 
   //creating a variable that holds all existing delete buttons from items at the moment

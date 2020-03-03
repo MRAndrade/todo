@@ -1,18 +1,13 @@
+body {background-color: #e3e9ff;}
+
 .container {
     margin: 0 auto;
-    max-width: 500px;
 }
 
-
-
-#todo-list {
-    list-style-type: none;
-}
+/* Add new item row */
+.tbn-1 {display: flex;}
+.tbn-1 input {flex-grow: 1}
 
 .done {
     text-decoration: line-through;
-}
-
-.none {
-    display: none;
 }
