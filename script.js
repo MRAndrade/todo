@@ -64,12 +64,16 @@ function addItem(){
     var check = document.createElement('input');
     check.setAttribute('type','checkbox');
 
+    var paragraph = document.createElement('p');
+
     var deleteBtn = document.createElement('button');
     deleteBtn.setAttribute('class','delete-btn');
+    deleteBtn.innerHTML = "x";
 
     var li = document.createElement('li');
     li.appendChild(check);
-    li.append(todoText);
+    li.appendChild(paragraph);
+    paragraph.append(todoText);
     li.appendChild(deleteBtn);
 
     todoList.appendChild(li);
