@@ -65,6 +65,7 @@ function addItem(){
     check.setAttribute('type','checkbox');
 
     var paragraph = document.createElement('p');
+    paragraph.setAttribute('class','todo-text');
 
     var deleteBtn = document.createElement('button');
     deleteBtn.setAttribute('class','delete-btn');
@@ -95,7 +96,7 @@ function clearList() {
 
 function isDone(){
   var counter = 0;
-  var items = todoList.children;
+  var items = document.getElementsByClassName('todo-text');
   for (var i=0; i < items.length; i++){
     if (items[i].classList.contains('done')){
       counter++;
@@ -110,7 +111,8 @@ function countList() {
 }
 
 function toggleDone(){
-  this.parentNode.classList.toggle('done');
+  /*this.parentNode.classList.toggle('done'); */
+  this.parentNode.querySelector('p').classList.toggle('done');
 }
 
 //This function is called when screen is first loadead, a new item is added or the list is cleared
