@@ -35,7 +35,7 @@ p {margin: 0;}
 .tbn-1 {
     display: flex; 
 }
-.tbn-1 input {
+.tbn-1 input, .edit-box {
     flex-grow: 1;
     border: none;
     background-color: transparent;
@@ -81,13 +81,20 @@ input::placeholder {
     outline: none;
 }
 
+.edit-box {
+    color: black;
+}
+
+.tbn-2 .edit-btn {
+    margin-left: auto;
+}
+
 .tbn-2 .delete-btn {
     float: right;
     font-size: 10px;
     color: #fff;
     background-color: transparent;
     border: none;
-    margin-left: auto;
     text-decoration: none;
     outline: none;
 }
@@ -113,4 +120,8 @@ input::placeholder {
 .done {
     text-decoration: line-through;
     color: #E63C5B;
+}
+
+.none {
+    display: none;
 }

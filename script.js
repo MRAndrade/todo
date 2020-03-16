@@ -11,47 +11,49 @@ var counterList = document.getElementById('counter-list');
 
 newItem.addEventListener("keydown", function(e){
   if (e.keyCode === 13) {
-    addItem();
+    addItem(newItem.value);
   };
 });
 
-addBtn.addEventListener("click", addItem);
+addBtn.addEventListener("click", function(){
+  addItem(newItem.value);
+});
 clearBtn.addEventListener("click", clearList);
 initialLoad();
 
-function addItem(){
+function addItem(text, edit, item){
   var todoText = "";
 
-  for(var i = 0; i < newItem.value.length; i++){
+  for(var i = 0; i < text.length; i++){
       
     if (
       //if character isn't a space
-      newItem.value[i] !== " ") {
+      text[i] !== " ") {
 
-      todoText += newItem.value[i];
+      todoText += text[i];
       
     } else if(
       //if next character isn't a space
-      newItem.value[i+1] !== " "
+      text[i+1] !== " "
       //if if it's not the last item of the string
-      && newItem.value[i+1] !== undefined
+      && text[i+1] !== undefined
       //if previous character isn't a space
-      && newItem.value[i-1] !== " "
+      && text[i-1] !== " "
       //if it's not the first item of the string
-      && newItem.value[i-1] !== undefined) {
+      && text[i-1] !== undefined) {
 
-      todoText += newItem.value[i];
+      todoText += text[i];
 
     }
     
     //in case of multiple whitespaces in a row
     else if (
       //if previous character is a space
-      newItem.value[i-1] == " " &&
+      text[i-1] == " " &&
       //if next character isn't a space
-      newItem.value[i+1] !== " " &&
+      text[i+1] !== " " &&
       //if it's not the last item of the string
-      newItem.value[i+1] !== undefined &&
+      text[i+1] !== undefined &&
       //preventing whitespaces BEFORE the non whitespace character
       todoText !== ""){
 
@@ -61,27 +63,62 @@ function addItem(){
 
   if (todoText !== "") {
 
-    var check = document.createElement('input');
-    check.setAttribute('type','checkbox');
+    if(edit === true) {
+      var p = item.parentNode.getElementsByTagName('p');
+      var paragraph = p[0];
+      paragraph.innerHTML = todoText;
+      paragraph.classList.toggle('none');
+      item.classList.toggle('none');
+    }
 
-    var paragraph = document.createElement('p');
-    paragraph.setAttribute('class','todo-text');
+    else {
+      var check = document.createElement('input');
+      check.setAttribute('type','checkbox');
 
-    var deleteBtn = document.createElement('button');
-    deleteBtn.setAttribute('class','delete-btn');
-    deleteBtn.innerHTML = "x";
+      var paragraph = document.createElement('p');
+      paragraph.setAttribute('class','todo-text');
 
-    var li = document.createElement('li');
-    li.appendChild(check);
-    li.appendChild(paragraph);
-    paragraph.append(todoText);
-    li.appendChild(deleteBtn);
+      var editBox = document.createElement('input');
+      editBox.setAttribute('class', 'edit-box none');
+      editBox.setAttribute('type','text');
 
-    todoList.appendChild(li);
-    newItem.value = "";
+      var editBtn = document.createElement('button');
+      editBtn.setAttribute('class','edit-btn');
+
+      var deleteBtn = document.createElement('button');
+      deleteBtn.setAttribute('class','delete-btn');
+      deleteBtn.innerHTML = "x";
+
+      var li = document.createElement('li');
+      li.appendChild(check);
+      li.appendChild(paragraph);
+      paragraph.append(todoText);
+      li.appendChild(editBox);
+      li.appendChild(editBtn);
+      li.appendChild(deleteBtn);
+
+      todoList.appendChild(li);
+      newItem.value = "";
+    }
   }
   
-  initialLoad();
+  initialLoad();  
+}
+
+function editItem(){
+  var getParagraph = this.parentNode.getElementsByTagName('p');
+  var p = getParagraph[0];
+  p.classList.toggle('none');
+
+  var getEditBox = this.parentNode.getElementsByClassName('edit-box');
+  var editBox = getEditBox[0];
+  editBox.classList.toggle('none');
+  editBox.focus();
+  editBox.addEventListener("keydown", function(e){
+    if (e.keyCode === 13) {
+      addItem(editBox.value, true, this);
+    };
+  });
 }
 
 function removeItem(){
@@ -137,11 +174,13 @@ function initialLoad(){
     checkboxItems[i].addEventListener('click', isDone);
   }
 
-  //creating a variable that holds all existing delete buttons from items at the moment
+  //creating a variable that holds all existing delete and edit buttons from items at the moment
   var deleteBtns = document.querySelectorAll('button[class="delete-btn"]');
+  var editBtns = document.querySelectorAll('button[class="edit-btn"]');
 
   //adding a listener to every delete button so it can delete the item which holds it
   for (var i = 0; i < deleteBtns.length; i++){
     deleteBtns[i].addEventListener('click', removeItem);
+    editBtns[i].addEventListener('click', editItem);
   }
 }
