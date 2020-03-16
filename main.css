@@ -122,6 +122,6 @@ input::placeholder {
     color: #E63C5B;
 }
 
-.none {
+.none, .teste {
     display: none;
 }
